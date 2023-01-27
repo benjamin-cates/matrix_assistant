@@ -5,7 +5,7 @@ import { Ratio, RatioInput } from "./ratio";
 import { Step, StepDisplay, StepInput } from "./step"
 import { Matrix, MatrixDisplay } from "./matrix";
 import ElementList from "./element_list";
-import NewPuzzle from "./info";
+import NewMatrix from "./new_matrix";
 
 class Game extends React.Component {
     state: {
@@ -92,7 +92,7 @@ class Game extends React.Component {
                 <div className="difficulty_input">Difficulty: {diffInput}</div>
             </div>
             <div id="right">
-                <NewPuzzle callback={this.createNew} errRef={errIO}></NewPuzzle>
+                <NewMatrix callback={this.createNew} errRef={errIO}></NewMatrix>
                 <StepInput addStep={this.addStep} show={this.state.mode == "steps"} maxRow={this.state.height} maxCol={this.state.width} errRef={errIO} />
                 <ElementList class="error_item" name="error" ref={this.state.errorRef} />
             </div>

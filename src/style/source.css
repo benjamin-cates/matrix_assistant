@@ -275,7 +275,7 @@ input {
     outline: #cccccc 0.3rem solid;
 }
 
-#newPuzzle {
+#newMatrix {
     text-align: center;
     background: #2a2a2a;
     padding: 1rem;
@@ -284,16 +284,16 @@ input {
     display: flex;
 }
 
-#newPuzzle>button {
+#newMatrix>button {
     height: 4rem;
     align-self: center;
 }
 
-#newPuzzle table {
+#newMatrix table {
     margin: 0 auto;
 }
 
-#newPuzzle input {
+#newMatrix input {
     margin-left: 1rem;
     font-size: 1.6rem;
 }

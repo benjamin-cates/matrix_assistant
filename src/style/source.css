@@ -13,6 +13,24 @@ body {
     padding: 1rem;
 }
 
+.difficulty_input {
+    position: absolute;
+    top: 0;
+    right: 0;
+    line-height:0;
+    font-size:1rem;
+}
+
+.difficulty_button {
+    font-size: 1rem;
+    border-radius: 0;
+}
+
+.selected_difficulty_button,
+.selected_difficulty_button:focus {
+    background: rgba(50, 50, 200, 0.4);
+}
+
 .subscript {
     font-size: 0.7em;
     vertical-align: bottom;
@@ -93,7 +111,7 @@ body {
     position: relative;
     padding: 1rem;
     justify-content: center;
-    margin:0.5rem 0 0.5rem 0;
+    margin: 0.5rem 0 0.5rem 0;
 }
 
 .matrix_table::after,

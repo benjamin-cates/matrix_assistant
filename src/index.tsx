@@ -23,6 +23,8 @@ class Game extends React.Component {
         width: number;
         //Height of the current matrix display
         height: number;
+        // Either 0 for autofilled matrices, 1 for all errors shown, 2 for partial error shown, 3 for ignore errors
+        difficulty: number;
     }
     constructor(props: any) {
         super(props);
@@ -72,6 +74,13 @@ class Game extends React.Component {
             </div>;
         });
         let nextMessage = this.state.mode == "matrix" ? "Fill in matrix" : "Row operations";
+        //Render difficulty input
+        const difficultyTypes = ["Autofill", "Show corrections", "Show errors", "Error count", "Ignore errors"];
+        let diffInput = difficultyTypes.map((val, i) => {
+            let className = "difficulty_button";
+            if (i == this.state.difficulty) className += " selected_difficulty_button";
+            return <button key={i.toString()} className={className} onClick={() => this.setState({ difficulty: i })}>{val}</button>
+        })
         const errIO = { add: this.addError, clear: this.clearError };
         return <>
             <div id="left">
@@ -80,6 +89,7 @@ class Game extends React.Component {
                     <span id="nextMessage">{nextMessage}</span>
                     <button onClick={this.continue} id="continueButton">Continue</button>
                 </div>
+                <div className="difficulty_input">Difficulty: {diffInput}</div>
             </div>
             <div id="right">
                 <NewPuzzle callback={this.createNew} errRef={errIO}></NewPuzzle>
@@ -97,6 +107,7 @@ class Game extends React.Component {
             inputRef: React.createRef<MatrixDisplay>(),
             errorRef: React.createRef<ElementList>(),
             mode: "matrix",
+            difficulty: 2,
         };
     }
     createNew = (w: number, h: number) => {
@@ -109,45 +120,65 @@ class Game extends React.Component {
     }
     continue = () => {
         this.state.errorRef.current.clear();
+        const matCount = this.state.matrices.length;
+        //Autofill if difficulty zero
+        if (this.state.difficulty == 0) {
+            let steps = [...this.state.steps];
+            let matrices = [...this.state.matrices];
+            matrices.push(this.state.matrices[matCount - 1].performSteps(this.state.steps[matCount - 1]));
+            if (this.state.mode == "steps") steps.push([]);
+            this.setState({ matrices, mode: "steps", steps });
+            return;
+        }
+        //Check matrix inputs
         if (this.state.mode == "matrix") {
-            if (this.state.matrices.length == 0)
+            //Skip if first matrix or is on ignore errors
+            if (this.state.matrices.length == 0 || this.state.difficulty == 4)
                 return this.finishMatrix();
-            const matCount = this.state.matrices.length;
             let mat = this.state.inputRef.current.getMatrix();
             let expected = this.state.matrices[matCount - 1].performSteps(this.state.steps[matCount - 1]);
             let diffs = Matrix.compare(mat, expected);
+            //Continue if first matrix or difficulty is 4
             if (diffs.length == 0)
                 return this.finishMatrix();
             //Add error for each element
-            diffs.forEach(v => {
+            //Show whole error
+            if (this.state.difficulty == 1) diffs.forEach(v =>
+                this.state.errorRef.current.add(
+                    <>a<span className="subscript">{Math.floor(v / mat.width + 1).toString() + (v % mat.width + 1).toString()}</span>
+                        &nbsp;=&nbsp;{expected.values[v].text()}&nbsp;≠&nbsp;{mat.values[v].text()}</>)
+            );
+            //Show partial error
+            if (this.state.difficulty == 2) diffs.forEach(v =>
                 this.state.errorRef.current.add(
                     <>
                         a<span className="subscript">{Math.floor(v / mat.width + 1).toString() + (v % mat.width + 1).toString()}</span>
                         &nbsp;≠&nbsp;{mat.values[v].text()}
-                    </>); console.log(v);
-            }
+                    </>)
             );
-            //Display errors
-            /*
-                Difficulty modes:
-                Ignore errors
-                Inform of errors
-                Locate errors
-                Automatic mode
-            */
+            //Show error count
+            if (this.state.difficulty == 3) {
+                let text = (diffs.length == 1) ? "There is one error" : ("There are " + diffs.length + " errors");
+                this.state.errorRef.current.add(<>{text}</>);
+            }
         }
         else {
             let matrices = [...this.state.matrices];
-            //Add empty steps list
             let steps = [...this.state.steps];
+            let nextMode = "matrix";
+            //Add empty steps list
             steps.push([]);
+            //Autofill matrix
+            if (this.state.difficulty == 0) {
+                matrices.push(this.state.matrices[matCount - 1].performSteps(this.state.steps[matCount - 1]));
+                nextMode = "steps";
+            }
             this.setState({
                 steps,
                 matrices,
-                mode: "matrix",
+                mode: nextMode,
             });
         }
-
     }
     addError = (el: React.ReactElement) => this.state.errorRef.current.add(el);
     clearError = () => this.state.errorRef.current.clear();

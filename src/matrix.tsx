@@ -111,31 +111,31 @@ export class MatrixDisplay extends React.Component<MatrixDisplayProps> {
         };
     }
     //Returns a list of cells
-    renderColumn = (colId: number) => {
-        let col = colId.toString();
+    renderRow = (rowId: number) => {
+        let row = rowId.toString();
         let cells: ReactElement[] = [];
         //Loop through rows
-        for (let y = 0; y < this.props.height; y++) {
+        for (let x = 0; x < this.props.width; x++) {
             //Input cell if is input mode
             if (this.props.inputMode)
-                cells.push(<RatioInput type="cell" key={y.toString() + " " + col} ref={this.state.references[colId + this.props.width * y]}></RatioInput>);
+                cells.push(<RatioInput type="cell" key={x.toString() + " " + row} ref={this.state.references[x + rowId * this.props.width]}></RatioInput>);
             //Else display cell
             else cells.push(
-                <div className="cell" key={y.toString() + " " + col}>{this.props.mat.getCell(colId, y).text()}</div>);
+                <div className="cell" key={x.toString() + " " + rowId}>{this.props.mat.getCell(x, rowId).text()}</div>);
         }
         return cells;
     }
     render() {
-        const columns = [];
-        //Loop through columns
-        for (let x = 0; x < this.props.width; x++) {
-            columns.push(<div
-                key={x.toString()}
-                className="matrix_column">{this.renderColumn(x)}
+        const rows = [];
+        //Loop through rows
+        for (let y = 0; y < this.props.height; y++) {
+            rows.push(<div
+                key={y.toString()}
+                className="matrix_row">{this.renderRow(y)}
             </div>);
         }
         //Make matrix
-        return <div className="matrix_table">{columns}</div>
+        return <div className="matrix_table">{rows}</div>
     }
     componentDidUpdate(prevProps: MatrixDisplayProps) {
         //Update input references if resized

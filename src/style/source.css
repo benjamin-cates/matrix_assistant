@@ -84,6 +84,7 @@ body {
     padding: 1rem;
     border-radius: 1rem;
     margin-right: 1rem;
+    min-width: 30rem;
 }
 
 #right {
@@ -116,6 +117,19 @@ body {
     font-size: 1rem;
 }
 
+#back_button {
+    vertical-align: middle;
+    display: inline-block;
+    line-height:0;
+}
+
+#back_arrow_button {
+    display: inline-block;
+    vertical-align: middle;
+    height: 2rem;
+    width: 2rem;
+}
+
 .matrix_table {
     width: min-content;
     display: flex;
@@ -125,7 +139,7 @@ body {
     position: relative;
     padding: 1rem;
     justify-content: center;
-    margin: 0.5rem 0 0.5rem 0;
+    margin: 0.5rem auto 0.5rem auto;
 }
 
 .matrix_table::after,
@@ -239,14 +253,17 @@ button:focus {
 }
 
 #nextMessage {
-    padding-left: 1rem;
     vertical-align: bottom;
     line-height: 5rem;
     font-size: 2rem;
 }
 
 #sectionEnd {
+    width: 100%;
+    display: flex;
     margin-top: 3rem;
+    justify-content: space-between;
+    align-items:center;
 }
 
 .error_item {

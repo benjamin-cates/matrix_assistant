@@ -85,6 +85,9 @@ class Game extends React.Component {
             <div id="left">
                 <>{sections}</>
                 <div id="sectionEnd">
+                    <button onClick={this.back} id="back_button">
+                        <svg fill="#000000" width="25" height="25" id="back_arrow_button" version="1.1" viewBox="-1 -3 9 6"><path strokeLinecap="round" stroke="white" d="M 0 0 L 3 -3 M 0 0 L 7 0 M 0 0 L 3 3 M 0 0 Z"></path></svg>
+                    </button>
                     <span id="nextMessage">{nextMessage}</span>
                     <button onClick={this.continue} id="continueButton">Continue</button>
                 </div>
@@ -190,7 +193,23 @@ class Game extends React.Component {
     }
     addError = (el: React.ReactElement) => this.state.errorRef.current.add(el);
     clearError = () => this.state.errorRef.current.clear();
-    finishMatrix = () => {
+    back = () => {
+        let steps = this.state.steps.slice();
+        if (this.state.mode == "matrix") {
+            if (this.state.matrices.length == 0) return;
+            steps.pop();
+            this.setState({
+                steps,
+                mode: "steps"
+            });
+        }
+        else {
+            let matrices = this.state.matrices.slice();
+            matrices.pop();
+            steps[steps.length - 1] = [];
+            this.setState({ mode: "matrix", steps, matrices });
+        }
+
     }
 }
 let root = createRoot(document.getElementById("game"));

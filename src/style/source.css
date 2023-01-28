@@ -103,6 +103,19 @@ body {
     line-height: 2.5rem;
 }
 
+.column_name {
+    width: 5.5rem;
+    margin: 0.2rem;
+    display: inline-block;
+    text-align: center;
+}
+
+.column_name_list {
+    top: -0.6rem;
+    position: absolute;
+    font-size: 1rem;
+}
+
 .matrix_table {
     width: min-content;
     display: flex;

@@ -43,10 +43,13 @@ export class Matrix {
         //Asserts
         if (Math.min(step.idx1, step.idx2) < 1 || Math.max(step.idx1, step.idx2) > this.width) throw "Column swap out of bounds";
         let one = step.idx1 - 1, two = step.idx2 - 1;
+        console.log(one, two);
         //Swap names if they exist
         if (this.columnNames) {
-            out.columnNames[one - 1] = this.columnNames[two - 1];
-            out.columnNames[two - 1] = this.columnNames[one - 1];
+            console.log(this.columnNames);
+            out.columnNames[one] = this.columnNames[two];
+            out.columnNames[two] = this.columnNames[one];
+            console.log(out.columnNames);
         }
         //Swap columns row by row
         for (let y = 0; y < this.height; y++) {
@@ -88,6 +91,7 @@ export class Matrix {
             else if (step.type == "row") this.performRowSwap(step, out);
             else this.performRowAdd(step, out);
         }
+        console.log(out.columnNames);
         return out;
     }
 };
@@ -134,8 +138,11 @@ export class MatrixDisplay extends React.Component<MatrixDisplayProps> {
                 className="matrix_row">{this.renderRow(y)}
             </div>);
         }
+        //Render column names
+        const colNames = this.props.mat?.columnNames.slice(0, this.props.width)
+            .map((str, i) => <span key={i.toString()} className="column_name">{str}</span>);
         //Make matrix
-        return <div className="matrix_table">{rows}</div>
+        return <div className="matrix_table"><div className="column_name_list">{colNames}</div>{rows}</div>
     }
     componentDidUpdate(prevProps: MatrixDisplayProps) {
         //Update input references if resized

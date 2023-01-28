@@ -41,7 +41,6 @@ class Game extends React.Component {
         let out: JSX.Element[] = [];
         const showX = matId == this.state.matrices.length - 1;
         for (let x = 0; x < steps.length; x++) {
-            console.log(steps[x]);
             let close = <button className="step_remover" onClick={() => this.removeStep(matId, x)}>&times;</button>
             out.push(<div className="step_display" key={x.toString()}>
                 {StepDisplay(steps[x])}
@@ -122,7 +121,7 @@ class Game extends React.Component {
         this.state.errorRef.current.clear();
         const matCount = this.state.matrices.length;
         //Autofill if difficulty zero
-        if (this.state.difficulty == 0) {
+        if (this.state.matrices.length != 0 && this.state.difficulty == 0) {
             let steps = [...this.state.steps];
             let matrices = [...this.state.matrices];
             matrices.push(this.state.matrices[matCount - 1].performSteps(this.state.steps[matCount - 1]));
@@ -133,14 +132,23 @@ class Game extends React.Component {
         //Check matrix inputs
         if (this.state.mode == "matrix") {
             //Skip if first matrix or is on ignore errors
-            if (this.state.matrices.length == 0 || this.state.difficulty == 4)
-                return this.finishMatrix();
+            if (this.state.matrices.length == 0 || this.state.difficulty == 4) {
+                let matrices = [...this.state.matrices];
+                matrices.push(this.state.inputRef.current.getMatrix());
+                this.setState({ mode: "steps", matrices });
+                return;
+            }
             let mat = this.state.inputRef.current.getMatrix();
             let expected = this.state.matrices[matCount - 1].performSteps(this.state.steps[matCount - 1]);
             let diffs = Matrix.compare(mat, expected);
             //Continue if first matrix or difficulty is 4
-            if (diffs.length == 0)
-                return this.finishMatrix();
+            if (diffs.length == 0) {
+                let matrices = [...this.state.matrices];
+                mat.columnNames = expected.columnNames.slice();
+                matrices.push(mat);
+                this.setState({ mode: "steps", matrices });
+                return;
+            }
             //Add error for each element
             //Show whole error
             if (this.state.difficulty == 1) diffs.forEach(v =>
@@ -183,10 +191,6 @@ class Game extends React.Component {
     addError = (el: React.ReactElement) => this.state.errorRef.current.add(el);
     clearError = () => this.state.errorRef.current.clear();
     finishMatrix = () => {
-        let matrices = [...this.state.matrices];
-        matrices.push(this.state.inputRef.current.getMatrix());
-        console.log(matrices);
-        this.setState({ mode: "steps", matrices });
     }
 }
 let root = createRoot(document.getElementById("game"));

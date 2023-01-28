@@ -85,6 +85,7 @@ body {
     border-radius: 1rem;
     margin-right: 1rem;
     min-width: 30rem;
+    align-self: flex-start;
 }
 
 #right {
@@ -120,7 +121,7 @@ body {
 #back_button {
     vertical-align: middle;
     display: inline-block;
-    line-height:0;
+    line-height: 0;
 }
 
 #back_arrow_button {
@@ -263,7 +264,7 @@ button:focus {
     display: flex;
     margin-top: 3rem;
     justify-content: space-between;
-    align-items:center;
+    align-items: center;
 }
 
 .error_item {

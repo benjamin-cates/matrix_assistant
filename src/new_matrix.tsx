@@ -1,4 +1,5 @@
 import React from "react";
+import guide_element from "./guide_element";
 
 //Contains the interfacde for the new matrix button
 interface NewMatrixProps { callback: (w: number, h: number) => void, errRef: { add: (el: React.ReactElement) => void, clear: () => void } };
@@ -6,11 +7,12 @@ export default class NewMatrix extends React.Component<NewMatrixProps> {
     state: {
         newMatrixWidth: string;
         newMatrixHeight: string;
+        showGuide: boolean;
     }
     constructor(props: NewMatrixProps) {
         super(props);
         //Default to 3x4
-        this.state = { newMatrixWidth: "4", newMatrixHeight: "3" };
+        this.state = { newMatrixWidth: "4", newMatrixHeight: "3", showGuide: false };
     }
     //Tests if puzzle size is invalid
     isInvalid(str: string) {
@@ -23,17 +25,23 @@ export default class NewMatrix extends React.Component<NewMatrixProps> {
     render() {
         let w = this.state.newMatrixWidth;
         let h = this.state.newMatrixHeight;
+        let guide = this.state.showGuide ? guide_element(this.closeGuide) : null;
         return <div id="newMatrix">
             <table><tbody>
                 <tr>
                     <td>Width:</td>
-                    <td><input className={this.isInvalid(w) ? "invalid_ratio" : ""} value={this.state.newMatrixWidth} id="newMatrixWidth" onChange={this.onChange} /></td></tr>
+                    <td><input className={this.isInvalid(w) ? "invalid_ratio" : ""} value={this.state.newMatrixWidth} id="newMatrixWidth" onChange={this.onChange} /></td>
+                    <td><button id="guide_open" onClick={() => this.setState({ showGuide: true })}>Guide</button><br /> </td></tr>
                 <tr>
                     <td>Height:</td>
-                    <td><input className={this.isInvalid(h) ? "invalid_ratio" : ""} value={this.state.newMatrixHeight} id="newMatrixHeight" onChange={this.onChange} /></td></tr>
+                    <td><input className={this.isInvalid(h) ? "invalid_ratio" : ""} value={this.state.newMatrixHeight} id="newMatrixHeight" onChange={this.onChange} /></td>
+                    <td><button onClick={this.create}>New Matrix</button></td></tr>
             </tbody></table>
-            <button onClick={this.create}>New Matrix</button>
+            {guide}
         </div>;
+    }
+    closeGuide = () => {
+        this.setState({ showGuide: false });
     }
     create = () => {
         this.props.errRef.clear();

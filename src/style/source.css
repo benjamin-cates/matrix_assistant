@@ -315,9 +315,9 @@ input {
     display: flex;
 }
 
-#newMatrix>button {
-    height: 4rem;
-    align-self: center;
+#newMatrix>table>tbody>tr>td>button {
+    height: 3rem;
+    font-size: 1.3rem;
 }
 
 #newMatrix table {
@@ -327,6 +327,53 @@ input {
 #newMatrix input {
     margin-left: 1rem;
     font-size: 1.6rem;
+}
+
+#guide {
+    text-align: left;
+    position: fixed;
+    padding: 2rem 1rem 3rem 3rem;
+    top: calc(10vh - 2rem);
+    left: calc(20vw - 3rem);
+    width: 60vw;
+    height: 80vh;
+    z-index: 10;
+    background: #2a2a2a;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    font-size: 1.2rem;
+    border-radius: 1rem;
+}
+
+#guide::-webkit-scrollbar {
+    width: 2rem;
+}
+
+#guide::-webkit-scrollbar-thumb {
+    background: #555;
+    border: 0.7rem solid transparent;
+    border-radius: 100rem;
+    padding: 1rem;
+    background-clip: content-box;
+}
+
+#guide_background {
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 9;
+}
+
+#guide_close {
+    float: right;
+    height: 2rem !important;
+    width: 2rem;
+    margin-right: 1rem;
+    line-height: 2rem;
+    padding: 0;
 }
 
 #step_enteror {

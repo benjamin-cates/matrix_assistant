@@ -97,7 +97,7 @@ export class Matrix {
 };
 
 interface MatrixDisplayProps {
-    width: number, height: number, inputMode: boolean, mat?: Matrix,
+    width: number, height: number, inputMode: boolean, mat?: Matrix, continue?: () => void
 };
 //Displays a matrix (or an input matrix if inputMode==true)
 export class MatrixDisplay extends React.Component<MatrixDisplayProps> {
@@ -113,6 +113,11 @@ export class MatrixDisplay extends React.Component<MatrixDisplayProps> {
         this.state = {
             references,
         };
+    }
+    //Tests if enter is pressed
+    handleKey = (e: React.KeyboardEvent) => {
+        if (e.key == "Enter" && this.props.inputMode) this.props.continue();
+
     }
     //Returns a list of cells
     renderRow = (rowId: number) => {
@@ -142,7 +147,7 @@ export class MatrixDisplay extends React.Component<MatrixDisplayProps> {
         const colNames = this.props.mat?.columnNames.slice(0, this.props.width)
             .map((str, i) => <span key={i.toString()} className="column_name">{str}</span>);
         //Make matrix
-        return <div className="matrix_table"><div className="column_name_list">{colNames}</div>{rows}</div>
+        return <div className="matrix_table" onKeyDown={this.handleKey}><div className="column_name_list">{colNames}</div>{rows}</div>
     }
     componentDidUpdate(prevProps: MatrixDisplayProps) {
         //Update input references if resized

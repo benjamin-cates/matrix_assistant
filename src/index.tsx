@@ -63,7 +63,8 @@ class Game extends React.Component {
             ref={this.state.inputRef}
             width={this.state.width}
             height={this.state.height}
-            inputMode={true}></MatrixDisplay>);
+            inputMode={true}
+            continue={this.continue}></MatrixDisplay>);
         //Push matrices to sections segment
         let sections = matrixEls.map((mat, i) => {
             let stepList = this.state.steps[i] ? <div className="step_list">{this.renderSteps(i)}</div> : null;

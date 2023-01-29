@@ -8,6 +8,11 @@ export class Ratio {
         let gcd = Ratio.GCD(top, bot);
         this.numer = Math.floor(top / gcd);
         this.denom = Math.floor(bot / gcd);
+        //Only make the numerator negative
+        if (this.denom < 0) {
+            this.numer *= -1;
+            this.denom *= -1;
+        }
     }
     copy = (): Ratio => {
         //Deep copy

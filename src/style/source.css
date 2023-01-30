@@ -70,7 +70,7 @@ body {
     background: #444;
 }
 
-#game {
+#app {
     margin-top: 4rem;
     display: flex;
     flex-direction: row;
@@ -394,12 +394,12 @@ input {
     position: fixed;
     bottom: 1rem;
     right: 1rem;
-    height:3rem;
+    height: 3rem;
 }
 
 #github_icon img {
     height: 3rem;
     width: 3rem;
-    filter:invert(100%);
-    line-height:3rem;
+    filter: invert(100%);
+    line-height: 3rem;
 }

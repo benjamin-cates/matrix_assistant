@@ -7,7 +7,7 @@ import { Matrix, MatrixDisplay } from "./matrix";
 import ElementList from "./element_list";
 import NewMatrix from "./new_matrix";
 
-class Game extends React.Component {
+class App extends React.Component {
     state: {
         //List of past matrix steps
         matrices: Matrix[];
@@ -213,6 +213,6 @@ class Game extends React.Component {
 
     }
 }
-let root = createRoot(document.getElementById("game"));
-root.render(<Game></Game>);
+let root = createRoot(document.getElementById("app"));
+root.render(<App></App>);
 

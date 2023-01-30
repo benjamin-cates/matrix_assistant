@@ -1,9 +1,13 @@
 import React from "react";
 
 const GuideElement = React.memo(({ closeCallback }: { closeCallback: () => void }) => {
+    //Close menu when escape or enter are pressed
+    const keydown = (e: React.KeyboardEvent) => {
+        if (e.key == "Escape" || e.key == "Enter") closeCallback();
+    }
     return <>
-        <button id="guide_background" onClick={closeCallback}></button>
-        <div id="guide">
+        <button id="guide_background" autoFocus onKeyDown={keydown} onClick={closeCallback}></button>
+        <div id="guide" onKeyDown={keydown} tabIndex={0}>
             <button id="guide_close" onClick={closeCallback}>&times;</button>
             <h1>Guide</h1>
             <p>Matrix assistant is intended to help you learn how to solve matrices step-by-step with error correction.</p>

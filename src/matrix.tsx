@@ -58,13 +58,10 @@ export class Matrix {
         //Asserts
         if (Math.min(step.idx1, step.idx2) < 1 || Math.max(step.idx1, step.idx2) > this.width) throw "Column swap out of bounds";
         let one = step.idx1 - 1, two = step.idx2 - 1;
-        console.log(one, two);
         //Swap names if they exist
         if (this.columnNames) {
-            console.log(this.columnNames);
             out.columnNames[one] = this.columnNames[two];
             out.columnNames[two] = this.columnNames[one];
-            console.log(out.columnNames);
         }
         //Swap columns row by row
         for (let y = 0; y < this.height; y++) {
@@ -106,7 +103,6 @@ export class Matrix {
             else if (step.type == "row") this.performRowSwap(step, out);
             else this.performRowAdd(step, out);
         }
-        console.log(out.columnNames);
         return out;
     }
 };

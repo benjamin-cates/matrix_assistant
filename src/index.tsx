@@ -107,7 +107,6 @@ class App extends React.Component {
         if (isFilled) {
             matrices.push(Matrix.random_integer_matrix(w, h));
             mode = "steps";
-            console.log(matrices[0]);
         }
         return {
             width: w,

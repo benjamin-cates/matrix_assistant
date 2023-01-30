@@ -43,9 +43,9 @@ class Game extends React.Component {
         for (let x = 0; x < steps.length; x++) {
             let close = <button className="step_remover" onClick={() => this.removeStep(matId, x)}>&times;</button>
             out.push(<div className="step_display" key={x.toString()}>
-                {StepDisplay(steps[x])}
+                <StepDisplay step={steps[x]} />
                 {showX ? close : ""}
-            </div>);
+            </div >);
         }
         return out;
     };

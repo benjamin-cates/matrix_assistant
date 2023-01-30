@@ -31,7 +31,7 @@ export class Step {
     }
 }
 
-export function StepDisplay(step: Step) {
+export const StepDisplay = React.memo(function stepDisplay({ step }: { step: Step }) {
     //Function for ignoring coefficient of one
     const hideOne = (text: string) => text == "1" ? "" : text;
     //Set or add rows
@@ -50,7 +50,7 @@ export function StepDisplay(step: Step) {
     //Row or column swap
     const sym = step.type == "col" ? "C" : "R";
     return <>{sym}<span className="subscript">{step.idx1}</span> ⇔ {sym}<span className="subscript">{step.idx2}</span></>
-}
+});
 
 interface StepInputProps {
     //Callback when step is added

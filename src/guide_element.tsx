@@ -1,10 +1,10 @@
 import React from "react";
 
-function guide_element(closeCallBack: () => void) {
+const GuideElement = React.memo(({ closeCallback }: { closeCallback: () => void }) => {
     return <>
-        <button id="guide_background" onClick={closeCallBack}></button>
+        <button id="guide_background" onClick={closeCallback}></button>
         <div id="guide">
-            <button id="guide_close" onClick={closeCallBack}>&times;</button>
+            <button id="guide_close" onClick={closeCallback}>&times;</button>
             <h1>Guide</h1>
             <p>Matrix assistant is intended to help you learn how to solve matrices step-by-step with error correction.</p>
 
@@ -52,5 +52,5 @@ function guide_element(closeCallBack: () => void) {
                 <li><a href="https://www.3blue1brown.com/topics/linear-algebra">3Blue1Brown Linear Algebra videos</a></li>
             </ul>
         </div></>;
-}
-export default guide_element;
+});
+export default GuideElement;

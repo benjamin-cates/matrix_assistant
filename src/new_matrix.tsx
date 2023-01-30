@@ -1,9 +1,9 @@
 import React from "react";
-import guide_element from "./guide_element";
+import GuideElement from "./guide_element";
 
 //Contains the interfacde for the new matrix button
 interface NewMatrixProps { callback: (w: number, h: number) => void, errRef: { add: (el: React.ReactElement) => void, clear: () => void } };
-export default class NewMatrix extends React.Component<NewMatrixProps> {
+export default class NewMatrix extends React.PureComponent<NewMatrixProps> {
     state: {
         newMatrixWidth: string;
         newMatrixHeight: string;
@@ -25,7 +25,7 @@ export default class NewMatrix extends React.Component<NewMatrixProps> {
     render() {
         let w = this.state.newMatrixWidth;
         let h = this.state.newMatrixHeight;
-        let guide = this.state.showGuide ? guide_element(this.closeGuide) : null;
+        let guide = this.state.showGuide ? <GuideElement closeCallback={this.closeGuide} /> : null;
         return <div id="newMatrix">
             <table><tbody>
                 <tr>

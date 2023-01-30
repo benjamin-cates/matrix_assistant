@@ -100,7 +100,7 @@ interface MatrixDisplayProps {
     width: number, height: number, inputMode: boolean, mat?: Matrix, continue?: () => void
 };
 //Displays a matrix (or an input matrix if inputMode==true)
-export class MatrixDisplay extends React.Component<MatrixDisplayProps> {
+export class MatrixDisplay extends React.PureComponent<MatrixDisplayProps> {
     state: {
         //List of references to input elements
         references: React.RefObject<RatioInput>[];

@@ -20,6 +20,21 @@ export class Matrix {
     copy = (): Matrix => {
         return new Matrix(this.width, this.height, this.values.map(r => r.copy()), this.columnNames.slice());
     }
+    static random_integer_matrix(w: number, h: number): Matrix {
+        //Generate random x vector to solve for
+        let answers = new Array(h).fill(0).map(_ => Math.floor(Math.random() * Math.random() * 20));
+        //Generate random coefficients
+        let coef = new Array(w * h).fill(0).map(_ => Math.floor(Math.random() * Math.random() * 10));
+        for (let i = 0; i < h; i++) {
+            let sum = 0;
+            for (let j = 0; j < w - 1; j++) {
+                sum += coef[i * w + j] * answers[j];
+            }
+            //Set last element to be sum of the previous part
+            coef[(w * i) + (w - 1)] = sum;
+        }
+        return new Matrix(w, h, coef.map(v => new Ratio(v, 1)));
+    }
     //Returns the differences of two matrices
     static compare(a: Matrix, b: Matrix): number[] {
         if (a.size() != b.size()) throw "Cannot compare matrices of different sizes";

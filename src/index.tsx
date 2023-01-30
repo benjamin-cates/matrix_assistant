@@ -28,7 +28,7 @@ class App extends React.Component {
     }
     constructor(props: any) {
         super(props);
-        this.state = this.defaultState(4, 3);
+        this.state = this.defaultState(4, 3, false);
     }
     removeStep = (matrixId: number, stepId: number) => {
         let steps = [...this.state.steps];
@@ -101,20 +101,27 @@ class App extends React.Component {
             </div>
         </>;
     }
-    defaultState = (w: number, h: number) => {
+    defaultState = (w: number, h: number, isFilled: boolean) => {
+        let matrices: Matrix[] = [];
+        let mode = "matrix";
+        if (isFilled) {
+            matrices.push(Matrix.random_integer_matrix(w, h));
+            mode = "steps";
+            console.log(matrices[0]);
+        }
         return {
             width: w,
             height: h,
-            matrices: [] as Matrix[],
+            matrices,
             steps: [[]] as Step[][],
             inputRef: React.createRef<MatrixDisplay>(),
             errorRef: React.createRef<ElementList>(),
-            mode: "matrix",
+            mode,
             difficulty: 2,
         };
     }
-    createNew = (w: number, h: number) => {
-        this.setState(this.defaultState(w, h));
+    createNew = (w: number, h: number, isFilled: boolean) => {
+        this.setState(this.defaultState(w, h, isFilled));
     }
     addStep = (step: Step) => {
         let newSteps = this.state.steps.slice();

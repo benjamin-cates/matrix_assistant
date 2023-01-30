@@ -2,7 +2,7 @@ import React from "react";
 import GuideElement from "./guide_element";
 
 //Contains the interfacde for the new matrix button
-interface NewMatrixProps { callback: (w: number, h: number) => void, errRef: { add: (el: React.ReactElement) => void, clear: () => void } };
+interface NewMatrixProps { callback: (w: number, h: number, isFilled: boolean) => void, errRef: { add: (el: React.ReactElement) => void, clear: () => void } };
 export default class NewMatrix extends React.PureComponent<NewMatrixProps> {
     state: {
         newMatrixWidth: string;
@@ -31,19 +31,20 @@ export default class NewMatrix extends React.PureComponent<NewMatrixProps> {
                 <tr>
                     <td>Width:</td>
                     <td><input className={this.isInvalid(w) ? "invalid_ratio" : ""} value={this.state.newMatrixWidth} id="newMatrixWidth" onChange={this.onChange} /></td>
-                    <td><button id="guide_open" onClick={() => this.setState({ showGuide: true })}>Guide</button><br /> </td></tr>
+                    <td><button onClick={() => this.create(true)}>Random</button></td></tr>
                 <tr>
                     <td>Height:</td>
                     <td><input className={this.isInvalid(h) ? "invalid_ratio" : ""} value={this.state.newMatrixHeight} id="newMatrixHeight" onChange={this.onChange} /></td>
-                    <td><button onClick={this.create}>New Matrix</button></td></tr>
+                    <td><button onClick={() => this.create(false)}>New</button></td></tr>
             </tbody></table>
+            <button id="guide_open" onClick={() => this.setState({ showGuide: true })}>Guide</button>
             {guide}
         </div>;
     }
     closeGuide = () => {
         this.setState({ showGuide: false });
     }
-    create = () => {
+    create = (isFilled: boolean) => {
         this.props.errRef.clear();
         //Check if dimensions are valid
         if (this.isInvalid(this.state.newMatrixWidth) || this.isInvalid(this.state.newMatrixHeight)) {
@@ -51,7 +52,7 @@ export default class NewMatrix extends React.PureComponent<NewMatrixProps> {
             return
         }
         //If so, alert parent through callback
-        this.props.callback(Math.floor(Number(this.state.newMatrixWidth)), Math.floor(Number(this.state.newMatrixHeight)));
+        this.props.callback(Math.floor(Number(this.state.newMatrixWidth)), Math.floor(Number(this.state.newMatrixHeight)), isFilled);
     }
     onChange = (e: React.SyntheticEvent) => {
         //On change of dimension inputs

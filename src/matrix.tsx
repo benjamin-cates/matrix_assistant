@@ -54,19 +54,21 @@ export class Matrix {
     setCell = (x: number, y: number, rat: Ratio) => {
         this.values[x + this.width * y] = rat;
     }
-    private performColumnSwap = (step: Step, out: Matrix) => {
+    private performColumnSwap = (step: Step) => {
         //Asserts
         if (Math.min(step.idx1, step.idx2) < 1 || Math.max(step.idx1, step.idx2) > this.width) throw "Column swap out of bounds";
         let one = step.idx1 - 1, two = step.idx2 - 1;
         //Swap names if they exist
         if (this.columnNames) {
-            out.columnNames[one] = this.columnNames[two];
-            out.columnNames[two] = this.columnNames[one];
+            let oneName = this.columnNames[one], twoName = this.columnNames[two];
+            this.columnNames[one] = twoName;
+            this.columnNames[two] = oneName;
         }
         //Swap columns row by row
         for (let y = 0; y < this.height; y++) {
-            out.setCell(one, y, this.getCell(two, y));
-            out.setCell(two, y, this.getCell(one, y));
+            let oneCell = this.getCell(one, y), twoCell = this.getCell(two, y);
+            this.setCell(one, y, twoCell);
+            this.setCell(two, y, oneCell);
         }
     };
     private performRowSwap = (step: Step, out: Matrix) => {
@@ -96,12 +98,21 @@ export class Matrix {
         }
     };
     performSteps = (steps: Step[]): Matrix => {
+        let from: Matrix = this;
+        //Perform column swaps first
+        if (steps.some(s => s.type == "col")) {
+            from = this.copy();
+            steps.forEach(s => {
+                if (s.type == "col")
+                    from.performColumnSwap(s);
+            });
+            steps = steps.filter(s => s.type != "col");
+        }
         //Loop through list of steps and return a new matrix with those operations performed
-        let out = this.copy();
+        let out = from.copy();
         for (let step of steps) {
-            if (step.type == "col") this.performColumnSwap(step, out);
-            else if (step.type == "row") this.performRowSwap(step, out);
-            else this.performRowAdd(step, out);
+            if (step.type == "row") from.performRowSwap(step, out);
+            else from.performRowAdd(step, out);
         }
         return out;
     }

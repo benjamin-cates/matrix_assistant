@@ -381,6 +381,7 @@ input {
 }
 
 #step_enteror:after {
+    pointer-events: none;
     position: absolute;
     font-size: 1.7rem;
     content: "A key - add\a S key - set row\a R key - row swap\a C key - col swap";

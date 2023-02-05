@@ -21,10 +21,11 @@ export class Matrix {
         return new Matrix(this.width, this.height, this.values.map(r => r.copy()), this.columnNames.slice());
     }
     static random_integer_matrix(w: number, h: number): Matrix {
+        let randInt = (max: number) => Math.floor(Math.random() * Math.random() * max * Math.sign(Math.random() - 0.5));
         //Generate random x vector to solve for
-        let answers = new Array(h).fill(0).map(_ => Math.floor(Math.random() * Math.random() * 20));
+        let answers = new Array(h).fill(0).map(_ => randInt(20));
         //Generate random coefficients
-        let coef = new Array(w * h).fill(0).map(_ => Math.floor(Math.random() * Math.random() * 10));
+        let coef = new Array(w * h).fill(0).map(_ => randInt(10));
         for (let i = 0; i < h; i++) {
             let sum = 0;
             for (let j = 0; j < w - 1; j++) {

@@ -34,6 +34,7 @@ export class Ratio {
     static fromText(text: string, def: number = 0) {
         //Default
         if (text.length == 0) return new Ratio(def, 1);
+        if (text == '-') return new Ratio(-def, 1);
         //Split into numerator and denominator
         let parts = text.split("/");
         if (parts.length > 2) throw "Invalid ratio";
@@ -91,7 +92,8 @@ export class RatioInput extends React.Component<{ type: string; name?: string }>
     getRatio = () => {
         if (this.state.value.length == 0) return null;
         if (!Ratio.isValid(this.state.value)) throw "Invalid number or fraction";
-        return Ratio.fromText(this.state.value);
+        let def = this.props.type == "coef" ? 1 : 0;
+        return Ratio.fromText(this.state.value, def);
     }
 }
 
